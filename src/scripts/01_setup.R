@@ -109,9 +109,7 @@ activity_per_day_test <- ggplot(
     col = c(
       rep('white', 3), 
       'black', 
-      rep('white', 1), 
-      'black', 
-      rep('white', 1), 
+      rep('white', 3), 
       'black', 
       rep('white', 2),
       'black',
@@ -119,7 +117,7 @@ activity_per_day_test <- ggplot(
       'black'
     )
   ) +
-  stat_summary(aes(label = ..y.., group = 1),
+  stat_summary(aes(label = after_stat(y), group = 1),
                fun = sum,
                geom = "text",
                position = position_stack(vjust = 1.04),
@@ -145,9 +143,12 @@ activity_per_day_test <- ggplot(
     text = element_text(family = "Roboto")
   )
 
+# view plot
+activity_per_day_test
+
 # save bar chart
 ggsave(activity_per_day_test,
-       filename = glue('src/plots/{ Sys.Date() }_activity_per_day_test.png'),
+       filename = glue('src/plots/{ Sys.Date() }_activity_per_day_test.jpg'),
        width = 20,
        height = 15,
        units = 'cm',
