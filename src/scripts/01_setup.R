@@ -20,7 +20,7 @@ library(patchwork)
 
 # Read Files ---------------------------------------------------------------
 
-raw_df <- read.csv('src/data/raw/2023-12-03_timeflow_main.csv',
+raw_df <- read.csv('data/raw/2023-12-18_timeflow_main.csv',
                    header = TRUE,
                    skip = 1) |>
   select(-X)
@@ -61,7 +61,7 @@ restored_df <- raw_df |>
 # Filtering ---------------------------------------------------------------
 
 # Get the current date and calculate the start and end dates of the current week
-current_date <- Sys.Date() - days(1)
+current_date <- Sys.Date() - days(2)
 start_of_week <-
   floor_date(current_date, "week") + days(1)  # Adjust by subtracting 1 day
 end_of_week <- start_of_week + days(6)
@@ -221,8 +221,8 @@ activity_per_day_test <- ggplot(bar_chart_df,
        fill = '') +
   theme_minimal() +
   scale_y_continuous(
-    breaks = seq(0, 540, 60),
-    limits = c(0, 540) ) +
+    breaks = seq(0, 660, 60),
+    limits = c(0, 660) ) +
   scale_fill_brewer(type = 'seq') +
   theme(
     axis.text.y = element_blank(),
@@ -298,6 +298,15 @@ pie_chart <- pie_chart +
   theme(legend.position = "bottom")
 
 pie_chart
+
+ggsave(
+  pie_chart,
+  filename = glue('src/plots/{ Sys.Date() }_activity_distribution.jpg'),
+  width = 20,
+  height = 15,
+  units = 'cm',
+  dpi = 300
+)
 
 combined_plot <- activity_per_day_test + 
   pie_chart +
